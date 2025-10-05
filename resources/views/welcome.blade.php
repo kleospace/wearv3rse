@@ -8,7 +8,7 @@
 </head>
 <body class="antialiased">
 <main class="container mx-auto p-8">
-    <h1 class="text-3xl font-bold mb-4">Willkommen bei wearV3rse</h1>
+    <h1 class="text-3xl font-bold mb-4">Willkommen bei WearV3rse</h1>
     <p class="mb-6">Das ist deine Startseite. Für die Abgabe zeigen wir hier gleich die neuesten Stylebooks.</p>
 
     @auth
