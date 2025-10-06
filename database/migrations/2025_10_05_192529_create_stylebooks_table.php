@@ -14,7 +14,5 @@ return new class extends Migration {
             $table->timestamps();
         });
     }
-    public function down(): void {
-        Schema::dropIfExists('stylebooks');
-    }
+    public function down(): void { Schema::dropIfExists('stylebooks'); }
 };
