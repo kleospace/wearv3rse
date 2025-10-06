@@ -7,30 +7,25 @@ use App\Http\Controllers\StylebookController;
 use App\Http\Controllers\ArticleController;
 
 /**
- * Öffentliche Seiten
+ * Öffentlich
  */
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 
-// Öffentliche Landing-Pages (Listen)
-Route::get('/stylebooks', [StylebookController::class, 'landing'])->name('stylebooks.landing');
-Route::get('/articles',   [ArticleController::class, 'landing'])->name('articles.landing');
-
 /**
- * Dashboard (Breeze)
- */
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-/**
- * Authentifizierte Bereiche
+ * Geschützte Bereiche (Login erforderlich)
+ * - Wer als Gast /stylebooks oder /articles aufruft, landet automatisch auf /login
+ *   und wird nach erfolgreichem Login zur ursprünglich gewünschten Seite zurückgeleitet.
  */
 Route::middleware('auth')->group(function () {
-    // Meine Stylebooks (Index als eigene Route, damit /stylebooks öffentlich bleiben kann)
-    Route::get('/my/stylebooks', [StylebookController::class, 'index'])->name('stylebooks.index');
+    // Geschützte Landing-Seiten
+    Route::get('/stylebooks', [StylebookController::class, 'landing'])->name('stylebooks.landing');
+    Route::get('/articles',   [ArticleController::class, 'landing'])->name('articles.landing');
 
-    // Vollständiges CRUD für Stylebooks, aber ohne index (den haben wir oben als /my/stylebooks)
+    // Vollständiges CRUD für Stylebooks, aber ohne index (um /stylebooks nicht zu überschreiben)
     Route::resource('stylebooks', StylebookController::class)->except(['index']);
+
+    // Optional: eigene Übersicht deiner Stylebooks
+    Route::get('/my/stylebooks', [StylebookController::class, 'index'])->name('stylebooks.index');
 
     // Breeze Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -39,6 +34,11 @@ Route::middleware('auth')->group(function () {
 });
 
 /**
- * Breeze Auth-Routen
+ * Breeze Auth-Routen (Login/Logout/Register)
  */
 require __DIR__ . '/auth.php';
+
+// Optional (wie von Breeze): Dashboard für verifizierte Nutzer
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
