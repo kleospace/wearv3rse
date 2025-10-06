@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Stylebook;
+use App\Models\{Stylebook, Article};
 
 class WelcomeController extends Controller
 {
     public function index()
     {
-        // Falls die stylebooks-Tabelle (noch) leer ist, ist $latest einfach eine leere Collection
-        $latest = Stylebook::with('user')->latest()->limit(8)->get();
+        $stylebooks = Stylebook::with('user')->latest()->take(6)->get();
+        $articles   = Article::with('author')->where('is_public', true)->latest()->take(6)->get();
 
-        return view('welcome', compact('latest'));
+        return view('welcome', compact('stylebooks','articles'));
     }
 }
