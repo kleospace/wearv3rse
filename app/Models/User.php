@@ -23,6 +23,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        // Wenn du später role/status Spalten hinzufügst:
+        // 'role',
+        // 'status',
     ];
 
     /**
@@ -58,5 +61,22 @@ class User extends Authenticatable
             ->take(2)
             ->map(fn ($word) => Str::substr($word, 0, 1))
             ->implode('');
+    }
+
+    /**
+     * Relations
+     */
+
+    // User -> Stylebooks (1:N)
+    public function stylebooks()
+    {
+        // Wenn du keinen use oben willst: return $this->hasMany(\App\Models\Stylebook::class);
+        return $this->hasMany(Stylebook::class);
+    }
+
+    // Optional: User -> Articles (1:N), falls du Artikel nutzt
+    public function articles()
+    {
+        return $this->hasMany(Article::class);
     }
 }
