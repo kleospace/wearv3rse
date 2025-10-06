@@ -11,7 +11,15 @@ class Stylebook extends Model
 
     protected $fillable = ['user_id','title','description'];
 
-    public function user() {
-        return $this->belongsTo(\App\Models\User::class);
+    // Owner
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    // Comments (optional but useful)
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
     }
 }
