@@ -1,30 +1,70 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ $title ?? config('app.name', 'wearV3rse') }}</title>
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+<body class="min-h-screen bg-gray-50 flex flex-col">
+<!-- Top-Bar -->
+<div class="w-full bg-gradient-to-r from-indigo-600 to-violet-600 text-white text-sm">
+    <div class="max-w-7xl mx-auto px-4 py-2 flex justify-between items-center">
+        <span class="font-medium">{{ config('app.name', 'wearV3rse') }}</span>
+        <span class="opacity-90">Fashion meets Code</span>
+    </div>
+</div>
 
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    </head>
-    <body class="font-sans text-gray-900 antialiased">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
-            <div>
-                <a href="/">
-                    <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+<!-- Header -->
+<header class="w-full bg-white shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+        <a href="{{ route('welcome') }}" class="text-xl font-bold tracking-tight text-gray-900">
+            {{ config('app.name', 'wearV3rse') }}
+        </a>
+
+        <nav class="hidden md:flex items-center gap-6">
+            <a href="{{ route('stylebooks.landing') }}" class="text-gray-700 hover:text-gray-900">Stylebooks</a>
+            <a href="{{ route('articles.landing') }}" class="text-gray-700 hover:text-gray-900">Articles</a>
+        </nav>
+
+        <div class="hidden md:flex items-center gap-3">
+            @auth
+                <span class="text-sm text-gray-700">Hi, {{ auth()->user()->name }}</span>
+                <a href="{{ route('stylebooks.index') }}" class="px-3 py-1.5 rounded bg-indigo-600 text-white hover:bg-indigo-700 text-sm">
+                    Meine Stylebooks
                 </a>
-            </div>
-
-            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
-                {{ $slot }}
-            </div>
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button class="px-3 py-1.5 rounded border text-sm">Logout</button>
+                </form>
+            @else
+                <a href="{{ route('login') }}" class="text-sm text-gray-700 hover:text-gray-900">Login</a>
+                <a href="{{ route('register') }}" class="px-3 py-1.5 rounded bg-indigo-600 text-white hover:bg-indigo-700 text-sm">
+                    Registrieren
+                </a>
+            @endauth
         </div>
-    </body>
+    </div>
+</header>
+
+<!-- Content -->
+<main class="flex-1">
+    {{ $slot }}
+</main>
+
+<!-- Footer -->
+<footer class="mt-12 bg-white border-t">
+    <div class="max-w-7xl mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between gap-3">
+        <p class="text-sm text-gray-600">© {{ date('Y') }} {{ config('app.name', 'wearV3rse') }}. Alle Rechte vorbehalten.</p>
+        <div class="flex items-center gap-4 text-sm">
+            <a href="{{ route('welcome') }}" class="text-gray-600 hover:text-gray-900">Home</a>
+            <a href="{{ route('stylebooks.landing') }}" class="text-gray-600 hover:text-gray-900">Stylebooks</a>
+            <a href="{{ route('articles.landing') }}" class="text-gray-600 hover:text-gray-900">Articles</a>
+        </div>
+    </div>
+</footer>
+</body>
 </html>
