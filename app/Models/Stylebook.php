@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Stylebook extends Model
 {
-    /** @use HasFactory<\Database\Factories\StylebookFactory> */
     use HasFactory;
+
+    protected $fillable = ['user_id','title','description'];
+
+    public function user() {
+        return $this->belongsTo(\App\Models\User::class);
+    }
 }
