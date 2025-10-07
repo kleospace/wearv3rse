@@ -1,10 +1,11 @@
 <x-app-layout>
-    <div class="max-w-2xl mx-auto py-8">
-        <a href="{{ route('stylebooks.index') }}" class="underline text-sm">&larr; back</a>
+    <div class="mx-auto max-w-3xl p-6">
+        <a href="{{ route('stylebooks.landing') }}" class="text-sm text-indigo-600 hover:underline">← Back</a>
 
-        <h1 class="text-2xl font-bold mt-2">{{ $stylebook->title }}</h1>
-        <div class="opacity-70 text-sm">by {{ $stylebook->user->name }}</div>
-
-        <p class="mt-4">{{ $stylebook->description }}</p>
+        <div class="mt-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <h1 class="text-2xl font-bold">{{ $stylebook->title }}</h1>
+            <div class="text-sm text-slate-500">by {{ $stylebook->user->name }} · {{ $stylebook->created_at->format('M d, Y') }}</div>
+            <p class="mt-4 text-slate-700 whitespace-pre-line">{{ $stylebook->description }}</p>
+        </div>
     </div>
 </x-app-layout>
